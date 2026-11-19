@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VELTRIX Creative Co. — Where Brands Evolve</title>
+<meta name="description" content="VELTRIX Creative Co. is an Indore-based marketing and creative agency working exclusively with international brands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0B0E; --ink-2:#131318; --line:rgba(243,238,228,.12); --cream:#F3EEE4; --mute:rgba(243,238,228,.58);
+    --accent:#FF5A36;
+    --serif:"Instrument Serif", Georgia, serif;
+    --sans:"Manrope", system-ui, sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--cream);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  ::selection{background:var(--accent);color:var(--ink)}
+  .mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .wrap{max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+  /* ---------- top bar ---------- */
+  header{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:22px clamp(20px,4vw,48px);mix-blend-mode:normal;transition:background .4s, backdrop-filter .4s}
+  header.solid{background:rgba(11,11,14,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .logo{display:flex;align-items:baseline;gap:10px}
+  .logo b{font-weight:700;letter-spacing:.32em;font-size:15px}
+  .logo span{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--mute)}
+  nav{display:flex;gap:30px;align-items:center}
+  nav a{font-size:14px;color:var(--mute);transition:color .25s}
+  nav a:hover{color:var(--cream)}
+  .cta{border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:13px;font-weight:600;color:var(--cream)!important;transition:background .3s,border-color .3s,color .3s}
+  .cta:hover{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+
+  /* ---------- 3D stage ---------- */
+  #stage{position:relative;height:100vh;height:100svh;min-height:640px;overflow:hidden;
+    background:radial-gradient(ellipse 70% 60% at 68% 58%, color-mix(in srgb,var(--accent) 22%, transparent), transparent 70%), radial-gradient(ellipse 120% 80% at 50% 120%, #1b1b22, var(--ink) 70%);
+    transition:background 1s}
+  #gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}
+  #gl.drag{cursor:grabbing} #gl.hover{cursor:pointer}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .hud{position:absolute;inset:0;pointer-events:none;display:grid;grid-template-columns:minmax(320px,470px) 1fr minmax(200px,260px);grid-template-rows:1fr auto;padding:110px clamp(20px,4vw,48px) 40px;gap:24px}
+  .hud > *{pointer-events:auto}
+  .intro{grid-column:1;grid-row:1;align-self:start}
+  .intro .mono{color:var(--mute);display:flex;gap:10px;align-items:center}
+  .intro .mono i{width:28px;height:1px;background:var(--accent);display:inline-block;transition:background 1s}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,6.2vw,92px);line-height:.95;letter-spacing:-.01em;margin-top:18px}
+  h1 em{color:var(--accent);transition:color 1s}
+
+  .card{grid-column:1;grid-row:2;align-self:end;max-width:470px}
+  .card .num{display:flex;gap:14px;align-items:center;color:var(--mute)}
+  .card .num b{color:var(--accent);font-weight:500;transition:color 1s}
+  .card h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1;margin:12px 0 8px}
+  .card .tag{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--mute)}
+  .card p.desc{margin:14px 0 18px;color:rgba(243,238,228,.8);max-width:420px}
+  .card ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+  .card li{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--cream);background:rgba(255,255,255,.03)}
+  .card .row{display:flex;gap:12px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--ink);font-weight:700;font-size:14px;border-radius:999px;padding:13px 22px;transition:transform .3s,background 1s}
+  .btn:hover{transform:translateY(-2px)}
+  .arrow{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:border-color .3s,background .3s}
+  .arrow:hover{border-color:var(--cream);background:rgba(255,255,255,.05)}
+
+  .index{grid-column:3;grid-row:1 / span 2;align-self:center;list-style:none}
+  .index li{border-top:1px solid var(--line)}
+  .index li:last-child{border-bottom:1px solid var(--line)}
+  .index button{width:100%;display:flex;gap:14px;align-items:baseline;padding:13px 0;text-align:left;color:var(--mute);transition:color .3s,padding .4s}
+  .index button span{font-family:var(--mono);font-size:11px}
+  .index button em{font-style:normal;font-size:15px;font-weight:500}
+  .index button:hover{color:var(--cream)}
+  .index button.on{color:var(--cream);padding-left:10px}
+  .index button.on span{color:var(--accent)}
+  .hint{position:absolute;right:clamp(20px,4vw,48px);bottom:40px;color:var(--mute);pointer-events:none}
+  .dots{display:none}
+
+  #loader{position:absolute;inset:0;display:grid;place-items:center;background:var(--ink);z-index:5;transition:opacity .8s}
+  #loader .mono{color:var(--mute)}
+  #loader .bar{width:180px;height:1px;background:var(--line);margin-top:14px;overflow:hidden}
+  #loader .bar i{display:block;height:100%;width:0;background:var(--accent)}
+  .glfail{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);max-width:300px;text-align:center;color:var(--mute);font-size:14px;display:none}
+
+  /* ---------- content sections ---------- */
+  section.block{padding:clamp(90px,12vw,160px) 0;border-top:1px solid var(--line)}
+  .eyebrow{color:var(--mute);margin-bottom:28px;display:flex;gap:10px;align-items:center}
+  .eyebrow i{width:28px;height:1px;background:var(--accent);display:inline-block}
+  .statement{font-family:var(--serif);font-size:clamp(32px,4.4vw,64px);line-height:1.05;max-width:1100px}
+  .statement em{color:var(--accent)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,90px);margin-top:70px}
+  .two h3{font-family:var(--serif);font-weight:400;font-size:30px;margin-bottom:12px}
+  .two p{color:rgba(243,238,228,.75);max-width:520px}
+
+  .steps{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:60px;counter-reset:s}
+  .step{border-left:1px solid var(--line);padding:0 22px 10px;position:relative}
+  .step:first-child{border-left:0;padding-left:0}
+  .step .mono{color:var(--accent)}
+  .step h4{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.1;margin:18px 0 10px}
+  .step p{font-size:14px;color:var(--mute)}
+  .track{height:1px;background:var(--line);margin-top:40px;position:relative;overflow:hidden}
+  .track i{position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(0)}
+
+  .values{display:grid;grid-template-columns:repeat(3,1fr);margin-top:60px;border-top:1px solid var(--line)}
+  .value{padding:34px 30px 38px 0;border-bottom:1px solid var(--line)}
+  .value:not(:nth-child(3n+1)){padding-left:30px;border-left:1px solid var(--line)}
+  .value h4{font-size:17px;font-weight:600;margin-bottom:8px}
+  .value p{color:var(--mute);font-size:14.5px}
+
+  .clients{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px}
+  .clients span{border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-size:14px}
+
+  .contact{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(30px,6vw,90px);align-items:start}
+  form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  form .full{grid-column:1/-1}
+  label{display:block;font-size:12px;color:var(--mute);margin-bottom:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+  input,textarea{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--cream);border-radius:12px;padding:13px 14px;font:inherit;font-size:15px;outline:none;transition:border-color .3s}
+  input:focus,textarea:focus{border-color:var(--accent)}
+  textarea{min-height:120px;resize:vertical}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips label{margin:0;cursor:pointer;text-transform:none;letter-spacing:0;font-family:var(--sans);font-size:13.5px;color:var(--cream)}
+  .chips input{display:none}
+  .chips span{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:8px 14px;transition:background .25s,border-color .25s,color .25s}
+  .chips input:checked + span{background:var(--accent);border-color:var(--accent);color:var(--ink);font-weight:600}
+  .sent{display:none;border:1px solid var(--line);border-radius:16px;padding:26px;background:var(--ink-2)}
+  .sent h3{font-family:var(--serif);font-weight:400;font-size:30px;margin-bottom:8px}
+  .sent pre{white-space:pre-wrap;font-family:var(--mono);font-size:12.5px;color:var(--mute);margin:16px 0;background:var(--ink);padding:14px;border-radius:10px;border:1px solid var(--line)}
+  .li{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);color:var(--cream)!important;transition:background .3s,border-color .3s,color .3s}
+  .li:hover{background:#0A66C2;border-color:#0A66C2;color:#fff!important}
+  .licard{display:flex;align-items:center;gap:16px;margin-top:34px;max-width:440px;border:1px solid var(--line);border-radius:16px;padding:18px 20px;background:var(--ink-2);transition:border-color .3s,transform .3s}
+  .licard:hover{border-color:#0A66C2;transform:translateY(-2px)}
+  .licard .badge{flex:none;width:46px;height:46px;border-radius:12px;background:#0A66C2;color:#fff;display:grid;place-items:center}
+  .licard b{display:block;font-size:15px}
+  .licard small{color:var(--mute);font-size:13px}
+  .licard .go{margin-left:auto;color:var(--mute)}
+  footer a.flink{display:inline-flex;align-items:center;gap:8px;transition:color .3s}
+  footer a.flink:hover{color:var(--cream)}
+  footer{border-top:1px solid var(--line);padding:40px 0 50px}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--mute);font-size:14px}
+  .big{font-family:var(--serif);font-size:clamp(60px,13vw,210px);line-height:.85;letter-spacing:-.02em;padding:60px 0 30px;color:var(--cream)}
+  .big em{color:var(--accent)}
+  .reveal{opacity:0;transform:translateY(30px)}
+
+  @media (max-width:1100px){ .steps{grid-template-columns:repeat(3,1fr);row-gap:44px} .step:nth-child(4){border-left:0;padding-left:0} }
+  @media (max-width:900px){
+    nav a:not(.cta):not(.li){display:none} nav{gap:12px}
+    .hud{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;padding:96px 20px 26px}
+    .intro{grid-row:1} h1{font-size:44px}
+    .index{display:none}
+    .card{grid-row:3;max-width:none;background:rgba(11,11,14,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:18px;padding:18px}
+    .card p.desc{display:none} .card h2{font-size:32px} .card ul{margin-bottom:14px}
+    .hint{display:none}
+    .dots{display:flex;gap:6px;margin-left:auto}
+    .dots i{width:6px;height:6px;border-radius:50%;background:var(--line);transition:background .3s,width .3s}
+    .dots i.on{background:var(--accent);width:18px;border-radius:3px}
+    .two,.contact{grid-template-columns:1fr}
+    .values{grid-template-columns:1fr}
+    .value,.value:not(:nth-child(3n+1)){padding:26px 0;border-left:0}
+    .steps{grid-template-columns:1fr 1fr} .step:nth-child(odd){border-left:0;padding-left:0} .step:nth-child(4){border-left:1px solid var(--line);padding-left:22px}
+    form{grid-template-columns:1fr}
+  }
+  .cta,.logo{white-space:nowrap}
+  @media (max-width:480px){ .logo span{display:none} }
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .reveal{opacity:1;transform:none} }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"VELTRIX Creative Co.","slogan":"Where Brands Evolve.","description":"Marketing and creative agency in Indore, India, serving international clients.","address":{"@type":"PostalAddress","addressLocality":"Indore","addressRegion":"Madhya Pradesh","addressCountry":"IN"},"sameAs":["https://www.linkedin.com/company/veltrixcreative/"]}
+</script>
+</head>
+<body>
+
+<header id="top">
+  <a class="logo" href="#stage"><b>VELTRIX</b><span>Creative Co.</span></a>
+  <nav>
+    <a href="#stage">Services</a>
+    <a href="#approach">Approach</a>
+    <a href="#about">About</a>
+    <a class="li" href="https://www.linkedin.com/company/veltrixcreative/" target="_blank" rel="noopener" aria-label="VELTRIX Creative Co. on LinkedIn" title="Follow us on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+    <a class="cta" href="#contact">Start a project</a>
+  </nav>
+</header>
+
+<!-- =================== 3D SERVICES STAGE =================== -->
+<section id="stage" aria-label="Services">
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <div class="grain"></div>
+
+  <div class="hud">
+    <div class="intro">
+      <div class="mono"><i></i>Indore, India → International brands</div>
+      <h1>Where brands<br><em>evolve.</em></h1>
+    </div>
+
+    <div class="card" aria-live="polite">
+      <div class="num mono"><b id="sNum">01</b><span>/ 06 — Services</span><div class="dots" id="dots"></div></div>
+      <h2 id="sName">Brand Identity</h2>
+      <div class="tag" id="sTag">Facets that make you unmistakable.</div>
+      <p class="desc" id="sDesc"></p>
+      <ul id="sList"></ul>
+      <div class="row">
+        <a class="btn" href="#contact" id="sCta">Enquire about this
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></a>
+        <button class="arrow" id="prev" aria-label="Previous service"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 7H1M6 2 1 7l5 5" stroke="currentColor" stroke-width="1.4"/></svg></button>
+        <button class="arrow" id="next" aria-label="Next service"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      </div>
+    </div>
+
+    <ol class="index" id="index"></ol>
+  </div>
+  <div class="hint mono">Drag to rotate · hover · click</div>
+  <div class="glfail" id="glfail">The 3D view couldn't start in this browser — the services are listed in the card.</div>
+
+  <div id="loader"><div><div class="mono" id="loadTxt">Loading studio — 0%</div><div class="bar"><i id="loadBar"></i></div></div></div>
+</section>
+
+<!-- =================== ABOUT =================== -->
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="eyebrow mono reveal"><i></i>About VELTRIX</div>
+    <p class="statement reveal">Successful marketing goes beyond promoting a product. It means understanding the business, <em>communicating its value</em> and building a brand experience that stays consistent everywhere.</p>
+    <div class="two">
+      <div class="reveal">
+        <h3>Our vision</h3>
+        <p>To build a recognised marketing agency from Indore that works with businesses across international markets — a trusted creative partner for brands that want a stronger presence and clearer value.</p>
+      </div>
+      <div class="reveal">
+        <h3>Our mission</h3>
+        <p>To help international businesses strengthen their brands through thoughtful marketing, creative communication and professional digital solutions — starting every project from the client's objectives, audience and identity.</p>
+      </div>
+    </div>
+    <div class="clients reveal" aria-label="Who we work with">
+      <span>International startups</span><span>Small &amp; medium businesses</span><span>Established companies</span><span>E-commerce brands</span><span>Professional services</span><span>Digital-first brands</span>
+    </div>
+  </div>
+</section>
+
+<!-- =================== APPROACH =================== -->
+<section class="block" id="approach">
+  <div class="wrap">
+    <div class="eyebrow mono reveal"><i></i>Our approach</div>
+    <p class="statement reveal">We start with your business, <em>not a package.</em></p>
+    <div class="track"><i id="track"></i></div>
+    <div class="steps" id="steps">
+      <div class="step reveal"><div class="mono" style="margin-top:22px">Step 01</div><h4>Understanding the business</h4><p>Your company, products, industry, customers and objectives.</p></div>
+      <div class="step reveal"><div class="mono" style="margin-top:22px">Step 02</div><h4>Identifying requirements</h4><p>What's running today, the challenges, and where to improve.</p></div>
+      <div class="step reveal"><div class="mono" style="margin-top:22px">Step 03</div><h4>Planning</h4><p>A project approach built around your priorities.</p></div>
+      <div class="step reveal"><div class="mono" style="margin-top:22px">Step 04</div><h4>Creative development</h4><p>Work that carries your brand identity and meets the brief.</p></div>
+      <div class="step reveal"><div class="mono" style="margin-top:22px">Step 05</div><h4>Review &amp; refinement</h4><p>We gather your feedback and make the agreed improvements.</p></div>
+      <div class="step reveal"><div class="mono" style="margin-top:22px">Step 06</div><h4>Delivery</h4><p>Agreed outputs, delivered with clear communication throughout.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== VALUES =================== -->
+<section class="block" id="values">
+  <div class="wrap">
+    <div class="eyebrow mono reveal"><i></i>What we hold to</div>
+    <p class="statement reveal">Creativity, strategy and <em>professionalism</em> — together.</p>
+    <div class="values">
+      <div class="value reveal"><h4>Creativity &amp; innovation</h4><p>Fresh ideas in the way brands communicate.</p></div>
+      <div class="value reveal"><h4>Quality &amp; consistency</h4><p>Attention to detail on every deliverable.</p></div>
+      <div class="value reveal"><h4>Client understanding</h4><p>Your business first, solutions second.</p></div>
+      <div class="value reveal"><h4>Transparency</h4><p>Clear requirements, timelines and deliverables.</p></div>
+      <div class="value reveal"><h4>Professionalism</h4><p>A structured, dependable working relationship.</p></div>
+      <div class="value reveal"><h4>Continuous improvement</h4><p>Learning and adapting with every project.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CONTACT =================== -->
+<section class="block" id="contact">
+  <div class="wrap contact">
+    <div>
+      <div class="eyebrow mono reveal"><i></i>Start a project</div>
+      <p class="statement reveal">Tell us where your brand is headed.</p>
+      <p class="reveal" style="color:var(--mute);margin-top:22px;max-width:440px">We work remotely with businesses outside India, from our base in Indore, Madhya Pradesh. Pick the services you're interested in and we'll start with a conversation about your business.</p>
+      <a class="licard reveal" href="https://www.linkedin.com/company/veltrixcreative/" target="_blank" rel="noopener">
+        <span class="badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></span>
+        <span><b>Follow VELTRIX on LinkedIn</b><small>Work, updates and ways to reach the team</small></span>
+        <svg class="go" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="currentColor" stroke-width="1.5"/></svg>
+      </a>
+    </div>
+    <div class="reveal">
+      <form id="form" novalidate>
+        <div><label for="fName">Name</label><input id="fName" required autocomplete="name"></div>
+        <div><label for="fEmail">Email</label><input id="fEmail" type="email" required autocomplete="email"></div>
+        <div><label for="fCo">Company</label><input id="fCo" autocomplete="organization"></div>
+        <div><label for="fCountry">Country</label><input id="fCountry" autocomplete="country-name"></div>
+        <div class="full"><label>Services</label><div class="chips" id="chips"></div></div>
+        <div class="full"><label for="fMsg">About your project</label><textarea id="fMsg"></textarea></div>
+        <div class="full"><button class="btn" type="submit">Send enquiry
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></button></div>
+      </form>
+      <div class="sent" id="sent">
+        <h3>Enquiry ready.</h3>
+        <p style="color:var(--mute)">This form isn't connected to an inbox yet — copy the summary below and send it to the VELTRIX team, or message us on <a href="https://www.linkedin.com/company/veltrixcreative/" target="_blank" rel="noopener" style="color:var(--cream);text-decoration:underline">LinkedIn</a>.</p>
+        <pre id="summary"></pre>
+        <div class="row" style="display:flex;gap:10px"><button class="btn" id="copy" type="button">Copy enquiry</button><button class="arrow" id="again" type="button" aria-label="Edit enquiry" style="width:auto;padding:0 18px;border-radius:999px">Edit</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap"><div class="big">Where brands <em>evolve.</em></div></div>
+  <div class="wrap"><span>VELTRIX Creative Co. · Indore, Madhya Pradesh, India</span><span>Marketing &amp; creative services for international clients</span><a class="flink" href="https://www.linkedin.com/company/veltrixcreative/" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg> LinkedIn</a><span>© 2026</span></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script>
+/* ------------------------------------------------------------------ data
+   key = object name inside models/veltrix-services.glb (exported from Blender) */
+const SERVICES = window.SERVICES = [
+  { key:'brand_identity', name:'Brand Identity', accent:'#FF5A36',
+    tag:'Facets that make you unmistakable.',
+    desc:'A professional brand image built from every facet — the mark, the colours, the type and the voice — so your business is recognised wherever it shows up.',
+    items:['Logo & identity system','Brand guidelines','Visual language','Brand voice'] },
+  { key:'social_media', name:'Social Media', accent:'#8B6CFF',
+    tag:'Conversations that orbit your brand.',
+    desc:'Consistent, on-brand social presence that builds real connections with the audiences you want to reach in each market.',
+    items:['Platform strategy','Content calendars','Post & story design','Community management'] },
+  { key:'content_copy', name:'Content & Copy', accent:'#C6F432',
+    tag:'One continuous story, everywhere.',
+    desc:'Words and content that communicate your value clearly — one story told the same way across your site, campaigns and channels.',
+    items:['Website copy','Campaign concepts','Editorial & blogs','Email content'] },
+  { key:'web_design', name:'Web Design', accent:'#3DD6F5',
+    tag:'Interfaces with presence.',
+    desc:'A strong digital home for your brand: clean, premium websites and landing pages designed around what your customers need to do.',
+    items:['Website design','Landing pages','UX structure','Design-to-build hand-off'] },
+  { key:'performance_ads', name:'Performance Marketing', accent:'#FFB547',
+    tag:'Growth you can measure.',
+    desc:'Campaigns planned against your business objectives, tested and refined so every step of the funnel earns its place.',
+    items:['Paid social','Search ads','Funnel & landing tests','Clear reporting'] },
+  { key:'strategy', name:'Brand Strategy', accent:'#FF4F9A',
+    tag:'Direction before decoration.',
+    desc:'We understand your business, market and audience before recommending anything — then set the direction every creative decision follows.',
+    items:['Market & audience research','Positioning','Campaign planning','Brand architecture'] },
+];
+const N = SERVICES.length;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s => document.querySelector(s);
+
+/* ------------------------------------------------------------------ UI scaffolding */
+const indexEl = $('#index'), dotsEl = $('#dots'), chips = $('#chips');
+SERVICES.forEach((s, i) => {
+  indexEl.insertAdjacentHTML('beforeend', `<li><button data-i="${i}"><span>${String(i+1).padStart(2,'0')}</span><em>${s.name}</em></button></li>`);
+  dotsEl.insertAdjacentHTML('beforeend', `<i></i>`);
+  chips.insertAdjacentHTML('beforeend', `<label><input type="checkbox" value="${s.name}"><span>${s.name}</span></label>`);
+});
+indexEl.addEventListener('click', e => { const b = e.target.closest('button'); if (b) nav(+b.dataset.i); });
+$('#prev').onclick = () => nav(VX.active - 1);
+$('#next').onclick = () => nav(VX.active + 1);
+$('#sCta').addEventListener('click', () => {
+  chips.querySelectorAll('input').forEach(c => { if (c.value === SERVICES[VX.active].name) c.checked = true; });
+});
+
+window.VX = { active: 0, goTo: null };
+
+function renderCard(i, animate) {
+  const s = SERVICES[i];
+  const set = () => {
+    $('#sNum').textContent = String(i+1).padStart(2,'0');
+    $('#sName').textContent = s.name;
+    $('#sTag').textContent = s.tag;
+    $('#sDesc').textContent = s.desc;
+    $('#sList').innerHTML = s.items.map(t => `<li>${t}</li>`).join('');
+  };
+  indexEl.querySelectorAll('button').forEach((b, k) => b.classList.toggle('on', k === i));
+  dotsEl.querySelectorAll('i').forEach((d, k) => d.classList.toggle('on', k === i));
+  document.documentElement.style.setProperty('--accent', s.accent);
+  const parts = ['#sName','#sTag','#sDesc','#sList'];
+  if (!animate || reduce || !window.gsap) return set();
+  gsap.to(parts, { opacity:0, y:-10, duration:.22, stagger:.03, ease:'power2.in', onComplete(){
+    set();
+    gsap.fromTo(parts, { opacity:0, y:14 }, { opacity:1, y:0, duration:.55, stagger:.06, ease:'power3.out' });
+  }});
+}
+renderCard(0, false);
+function nav(i) {
+  if (VX.goTo) return VX.goTo(i);
+  VX.active = ((i % N) + N) % N; renderCard(VX.active, true);   // 3D layer unavailable: card still works
+}
+VX.renderCard = renderCard;
+
+/* ------------------------------------------------------------------ page sections */
+const header = $('#top');
+addEventListener('scroll', () => header.classList.toggle('solid', scrollY > innerHeight * .6), { passive: true });
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    io.unobserve(en.target);
+    if (reduce || !window.gsap) { en.target.style.opacity = 1; en.target.style.transform = 'none'; return; }
+    const sibs = [...en.target.parentElement.children].filter(c => c.classList.contains('reveal'));
+    gsap.to(en.target, { opacity: 1, y: 0, duration: 1, delay: Math.max(0, sibs.indexOf(en.target)) * .07, ease: 'power3.out' });
+  });
+}, { threshold: .15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+new IntersectionObserver(([en]) => {
+  if (en.isIntersecting) if (window.gsap) gsap.to('#track', { scaleX: 1, duration: reduce ? 0 : 2.2, ease: 'power2.inOut' });
+}, { threshold: .3 }).observe($('#steps'));
+
+// ---------- enquiry form (not wired to a backend — builds a copyable summary)
+const form = $('#form'), sent = $('#sent');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#fName'), email = $('#fEmail');
+  [name, email].forEach(f => f.style.borderColor = '');
+  let ok = true;
+  if (!name.value.trim()) { name.style.borderColor = '#ff6b6b'; ok = false; }
+  if (!/^\S+@\S+\.\S+$/.test(email.value)) { email.style.borderColor = '#ff6b6b'; ok = false; }
+  if (!ok) return;
+  const svc = [...chips.querySelectorAll('input:checked')].map(c => c.value);
+  $('#summary').textContent =
+`New enquiry — VELTRIX Creative Co.
+Name: ${name.value.trim()}
+Email: ${email.value.trim()}
+Company: ${$('#fCo').value.trim() || '—'}
+Country: ${$('#fCountry').value.trim() || '—'}
+Services: ${svc.join(', ') || '—'}
+
+${$('#fMsg').value.trim() || ''}`.trim();
+  form.style.display = 'none'; sent.style.display = 'block';
+  if (!reduce && window.gsap) gsap.from(sent, { opacity: 0, y: 20, duration: .6, ease: 'power3.out' });
+});
+$('#again').onclick = () => { sent.style.display = 'none'; form.style.display = 'grid'; };
+$('#copy').onclick = async () => {
+  try { await navigator.clipboard.writeText($('#summary').textContent); $('#copy').textContent = 'Copied'; }
+  catch { $('#copy').textContent = 'Select & copy the text above'; }
+  setTimeout(() => $('#copy').textContent = 'Copy enquiry', 2200);
+};
+
+// If the 3D layer hasn't started within 8s (blocked CDN, no WebGL), drop the loader.
+setTimeout(() => { const L = $('#loader'); if (L && !VX.ready) { L.style.opacity = 0; L.style.pointerEvents = 'none'; $('#glfail').style.display = 'block'; } }, 8000);
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const SERVICES = window.SERVICES, N = SERVICES.length, STEP = Math.PI * 2 / N;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s => document.querySelector(s);
+const renderCard = VX.renderCard;
+let active = 0, hovered = -1;
+
+/* ------------------------------------------------------------------ three.js stage */
+const stage = $('#stage'), canvas = $('#gl');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:'high-performance' });
+} catch (err) {
+  $('#loader').style.display = 'none'; $('#glfail').style.display = 'block';
+  throw err;
+}
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+const camBase = new THREE.Vector3(), lookAt = new THREE.Vector3();
+
+const RADIUS = 3.3;
+const world = new THREE.Group(); scene.add(world);
+const carousel = new THREE.Group(); world.add(carousel);
+
+// lights
+scene.add(new THREE.HemisphereLight(0xffffff, 0x1a1a22, 0.5));
+const key = new THREE.DirectionalLight(0xffffff, 2.2);
+key.position.set(3, 7, 6); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left:-6, right:6, top:6, bottom:-6, near:1, far:25 });
+key.shadow.camera.updateProjectionMatrix();
+key.shadow.bias = -0.0004; key.shadow.radius = 6;
+world.add(key); world.add(key.target);
+const rim = new THREE.PointLight(new THREE.Color(SERVICES[0].accent), 18, 9, 1.6);
+rim.position.set(-1.6, 2.6, RADIUS - 1.4); world.add(rim);
+const fill = new THREE.PointLight(0xffffff, 6, 10, 2); fill.position.set(1.8, 1.2, RADIUS + 2); world.add(fill);
+
+// floor: shadow catcher + orbit ring
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ opacity:.38 }));
+floor.rotation.x = -Math.PI/2; floor.receiveShadow = true; world.add(floor);
+const orbit = new THREE.Mesh(new THREE.RingGeometry(RADIUS - .006, RADIUS + .006, 180),
+  new THREE.MeshBasicMaterial({ color:0xf3eee4, transparent:true, opacity:.14, side:THREE.DoubleSide }));
+orbit.rotation.x = -Math.PI/2; orbit.position.y = .002; world.add(orbit);
+
+// per-service slots: slot(position on ring) > float(bob) > wrap(GSAP scale/lift) > tilt(GSAP lean) > idle(spin) > model
+const items = SERVICES.map((s, i) => {
+  const slot = new THREE.Group(), float = new THREE.Group(), wrap = new THREE.Group(), tilt = new THREE.Group(), idle = new THREE.Group();
+  const a = i * STEP;
+  slot.position.set(Math.sin(a) * RADIUS, 0, Math.cos(a) * RADIUS);
+  slot.rotation.y = a;
+  slot.add(float); float.add(wrap); wrap.add(tilt); tilt.add(idle);
+  carousel.add(slot);
+  wrap.scale.setScalar(i === 0 ? 1 : .72);
+  return { s, slot, float, wrap, tilt, idle, speed: { v: .25 }, accentMats: [], glowMats: [] };
+});
+const hitMeshes = [];
+
+function makeMaterial(name, accent) {
+  const c = new THREE.Color(accent);
+  switch (name) {
+    case 'chrome': return new THREE.MeshPhysicalMaterial({ color:0xdadce4, metalness:1, roughness:.16, clearcoat:.4 });
+    case 'glass':  return new THREE.MeshPhysicalMaterial({ color:0xe9efff, metalness:0, roughness:.08, transparent:true, opacity:.28,
+                     side:THREE.DoubleSide, depthWrite:false, clearcoat:1, envMapIntensity:1.6 });
+    case 'glow':   return new THREE.MeshStandardMaterial({ color:c.clone().lerp(new THREE.Color(0xffffff), .35), emissive:c, emissiveIntensity:1.6, roughness:.3 });
+    case 'accent':
+    default:       return new THREE.MeshPhysicalMaterial({ color:c, metalness:.15, roughness:.28, clearcoat:1, clearcoatRoughness:.12,
+                     emissive:c, emissiveIntensity:0, sheen:.4, sheenColor:c });
+  }
+}
+
+// ---------- load the Blender-exported GLB
+const MODEL_URL = 'models/veltrix-services.glb';
+const loader = new GLTFLoader();
+function onModels(gltf) {
+  items.forEach((it, i) => {
+    const src = gltf.scene.getObjectByName(it.s.key);
+    if (!src) { console.warn('missing object', it.s.key); return; }
+    const model = src.clone(true);
+    model.position.set(0, 0, 0); model.rotation.set(0, 0, 0);
+    model.traverse(o => {
+      if (!o.isMesh) return;
+      const m = makeMaterial(o.material.name, it.s.accent);
+      o.material = m;
+      o.castShadow = !m.transparent;
+      o.receiveShadow = true;
+      o.userData.index = i;
+      hitMeshes.push(o);
+      if (m.isMeshPhysicalMaterial && m.emissiveIntensity === 0 && m.sheen) it.accentMats.push(m);
+      if (m.emissiveIntensity > 1) it.glowMats.push(m);
+    });
+    it.idle.add(model);
+  });
+  intro();
+}
+function onProgress(e) {
+  if (e.total) { const p = Math.round(e.loaded / e.total * 100); $('#loadTxt').textContent = `Loading studio — ${p}%`; $('#loadBar').style.width = p + '%'; }
+}
+function onFail(err) {
+  console.error(err);
+  $('#loadTxt').textContent = 'Could not load 3D models';
+  setTimeout(() => { $('#loader').style.opacity = 0; $('#loader').style.pointerEvents = 'none'; $('#glfail').style.display = 'block'; }, 900);
+}
+// Primary: the Blender-exported binary glTF. Fallback: the same GLB as base64 text,
+// for hosts that refuse to serve .glb files.
+loader.load(MODEL_URL, onModels, onProgress, async () => {
+  try {
+    const res = await fetch(MODEL_URL + '.txt');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const bin = Uint8Array.from(atob((await res.text()).trim()), c => c.charCodeAt(0));
+    loader.parse(bin.buffer, '', onModels, onFail);
+  } catch (err) { onFail(err); }
+});
+
+VX.goTo = goTo;
+function intro() {
+  VX.ready = true;
+  const L = $('#loader'); L.style.opacity = 0; setTimeout(() => L.remove(), 900);
+  if (reduce) return;
+  items.forEach((it, i) => {
+    gsap.from(it.float.position, { y: 3.5, duration: 1.6, delay: .1 + i * .09, ease: 'expo.out' });
+    gsap.from(it.idle.rotation, { y: -Math.PI * 1.5, duration: 2.2, delay: .1 + i * .09, ease: 'expo.out' });
+  });
+  gsap.from(state, { angle: STEP * 1.2, duration: 2.2, ease: 'expo.out' });
+  gsap.from(['.intro .mono','h1','.card','.index li'], { opacity: 0, y: 24, duration: 1, stagger: .07, delay: .3, ease: 'power3.out' });
+}
+
+// ---------- carousel state & navigation
+const state = { angle: 0 };
+let spinTween;
+function norm(a) { return ((a + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI; }
+
+function goTo(i, opts = {}) {
+  i = ((i % N) + N) % N;
+  const changed = i !== active;
+  active = i; VX.active = i;
+  const target = -i * STEP;
+  const d = norm(target - state.angle);
+  gsap.to(state, { angle: state.angle + d, duration: reduce ? .01 : (opts.fast ? .7 : 1.25), ease: 'power3.inOut', overwrite: true });
+  items.forEach((it, k) => setScale(k));
+  gsap.to(rim.color, { ...rgb(SERVICES[i].accent), duration: 1 });
+  if (changed) {
+    renderCard(i, true);
+    // showcase spin for the newly focused object
+    if (!reduce) gsap.fromTo(items[i].tilt.rotation, { y: -Math.PI * .6 }, { y: 0, duration: 1.6, ease: 'power3.out', overwrite: true });
+  }
+}
+function rgb(hex) { const c = new THREE.Color(hex); return { r: c.r, g: c.g, b: c.b }; }
+
+function setScale(k) {
+  const base = k === active ? 1 : .72;
+  const s = base * (k === hovered ? 1.09 : 1);
+  gsap.to(items[k].wrap.scale, { x: s, y: s, z: s, duration: .8, ease: 'power3.out', overwrite: 'auto' });
+}
+
+// ---------- hover & click (raycast) + drag-to-rotate
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), pointer = { x: 0, y: 0 };
+let drag = null;
+
+function pick(e) {
+  const r = canvas.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObjects(hitMeshes, false)[0];
+  return hit ? hit.object.userData.index : -1;
+}
+
+function setHover(i) {
+  if (i === hovered) return;
+  const prev = hovered; hovered = i;
+  if (prev >= 0) {
+    const p = items[prev];
+    setScale(prev);
+    gsap.to(p.speed, { v: .25, duration: 1.4, ease: 'power2.out' });
+    gsap.to(p.wrap.position, { y: 0, duration: .8, ease: 'power3.out' });
+    gsap.to(p.tilt.rotation, { x: 0, z: 0, duration: .9, ease: 'elastic.out(1,.6)' });
+    p.accentMats.forEach(m => gsap.to(m, { emissiveIntensity: 0, duration: .6 }));
+  }
+  if (i >= 0) {
+    const h = items[i];
+    setScale(i);
+    gsap.to(h.speed, { v: reduce ? .25 : 2.4, duration: .5, ease: 'power2.out' });
+    gsap.to(h.wrap.position, { y: .14, duration: .6, ease: 'power3.out' });
+    h.accentMats.forEach(m => gsap.to(m, { emissiveIntensity: .22, duration: .4 }));
+  }
+  canvas.classList.toggle('hover', i >= 0);
+}
+
+canvas.addEventListener('pointermove', e => {
+  const r = canvas.getBoundingClientRect();
+  pointer.x = (e.clientX - r.left) / r.width * 2 - 1;
+  pointer.y = (e.clientY - r.top) / r.height * 2 - 1;
+  if (drag) {
+    const dx = e.clientX - drag.x0;
+    if (Math.abs(dx) > 6) drag.moved = true;
+    if (drag.moved) { state.angle = drag.a0 + dx * 0.0065; setHover(-1); }
+    return;
+  }
+  if (e.pointerType === 'mouse') {
+    const i = pick(e); setHover(i);
+    if (i >= 0 && !reduce) gsap.to(items[i].tilt.rotation, { x: pointer.y * .18, z: -pointer.x * .12, duration: .6, ease: 'power2.out', overwrite: 'auto' });
+  }
+});
+canvas.addEventListener('pointerleave', () => setHover(-1));
+canvas.addEventListener('pointerdown', e => {
+  gsap.killTweensOf(state);
+  drag = { x0: e.clientX, a0: state.angle, moved: false };
+  canvas.setPointerCapture(e.pointerId);
+  canvas.classList.add('drag');
+});
+canvas.addEventListener('pointerup', e => {
+  canvas.classList.remove('drag');
+  if (!drag) return;
+  const wasDrag = drag.moved; drag = null;
+  if (wasDrag) { goTo(Math.round(-state.angle / STEP), { fast: true }); return; }
+  const i = pick(e);
+  if (i < 0) return goTo(active);
+  if (i !== active) return goTo(i);
+  // click the focused object → full showcase spin
+  if (!reduce) {
+    spinTween?.kill();
+    spinTween = gsap.to(items[i].idle.rotation, { y: '+=' + Math.PI * 2, duration: 1.6, ease: 'power3.inOut' });
+    items[i].glowMats.forEach(m => gsap.fromTo(m, { emissiveIntensity: 5 }, { emissiveIntensity: 1.6, duration: 1.4 }));
+  }
+});
+canvas.addEventListener('pointercancel', () => { if (drag) { drag = null; goTo(Math.round(-state.angle / STEP)); } });
+
+addEventListener('keydown', e => {
+  if (!stageVisible || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  if (e.key === 'ArrowRight') goTo(active + 1);
+  if (e.key === 'ArrowLeft') goTo(active - 1);
+});
+
+// ---------- layout
+function layout() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  const narrow = w < 900;
+  if (narrow) {
+    world.position.set(0, .35, 0);
+    camBase.set(0, 2.4, RADIUS + 7.6);
+    lookAt.set(0, 1.25, RADIUS - .6);
+    camera.fov = 38;
+  } else {
+    world.position.set(.95, 0, 0);
+    camBase.set(0, 2.1, RADIUS + 6.2);
+    lookAt.set(.6, 1.0, RADIUS - .8);
+    camera.fov = 30;
+  }
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize', layout); layout();
+camera.position.copy(camBase);
+
+// ---------- render loop (paused when the stage is off-screen)
+const clock = new THREE.Clock();
+let stageVisible = true;
+function tick() {
+  const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
+  carousel.rotation.y = state.angle;
+  items.forEach((it, i) => {
+    it.idle.rotation.y += it.speed.v * dt * (reduce ? 0 : 1);
+    it.float.position.y = reduce ? 0 : Math.sin(t * 1.1 + i * 1.3) * (i === active ? .05 : .025);
+  });
+  const k = reduce ? 0 : 1;
+  camera.position.x += (camBase.x + pointer.x * .45 * k - camera.position.x) * .04;
+  camera.position.y += (camBase.y - pointer.y * .25 * k - camera.position.y) * .04;
+  camera.position.z = camBase.z;
+  camera.lookAt(lookAt);
+  renderer.render(scene, camera);
+}
+new IntersectionObserver(([en]) => {
+  stageVisible = en.isIntersecting;
+  if (stageVisible) clock.getDelta();
+  renderer.setAnimationLoop(stageVisible ? tick : null);
+}).observe(stage);
+renderer.setAnimationLoop(tick);
+
+</script>
+</body>
+</html>
